@@ -1,6 +1,9 @@
 name: Python package
 
-on: push
+on:
+  schedule:
+    - cron: "8 0 * * *" #runs at 08:00 UTC everyday
+  workflow_dispatch:
 
 jobs:
   build:
@@ -24,18 +27,13 @@ jobs:
       - name: schedulebuild
         run: |
           python ee.py
-      - name: commit files
+      - name: commit datasets
         run: |
-          git config --local user.email "1519166janssen@zuyd.nl"
-          git config --local user.name "Roald1519166"
+          git config --global user.email "1519166janssen@zuyd.nl"
+          git config --global user.name "Roald1519166"
           git add -A
-          git diff-index --quiet HEAD || (git commit -a -m "updated logs" --allow-empty)
-      - name: push changes
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.TOKEN }}
-          branch: main
-
+          git commit -am "Uploaden van datasets"
+          git push
 # on:
 #   schedule:
 #     - cron: "8 0 * * *" #runs at 08:00 UTC everyday
