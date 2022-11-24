@@ -256,7 +256,7 @@ oud = oud.fillna("")
 
 # %%
 name = './Data/huurwoningentotaal'
-inner2.to_excel(name + current_time + ".xlsx", index=False)
+# inner2.to_excel(name + current_time + ".xlsx", index=False)
 inner2.to_csv(name + 'voorpowerbi' + ".csv", index=False)
 
 
