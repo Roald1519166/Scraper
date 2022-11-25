@@ -10,9 +10,9 @@ pd.__version__
 
 # %%
 ## Dataset variabele
-dataset = './Data/huurwoningentotaalvoorpowerbi.csv'
+dataset = './Data/huurwoningentotaalvoorpowerbi.xlsx'
 ## Ophalen van de datasets
-oud = pd.read_csv(dataset)
+oud = pd.read_excel(dataset)
 oud = oud.drop(oud[oud['Status'] == 'Inactive'].index, inplace=True)
 oud.dropna(how="any", inplace=True)
 oud = oud.fillna("", inplace=False)
@@ -260,5 +260,6 @@ inner2['Land'] = 'Nederland'
 name = './Data/huurwoningentotaal'
 inner2.to_excel(name + current_time + ".xlsx", index=False)
 inner2.to_csv(name + 'voorpowerbi' + ".csv", index=False)
+inner2.to_excel(name + 'voorpowerbi' + ".xlsx", index=False)
 
 
