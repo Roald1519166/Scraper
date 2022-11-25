@@ -14,8 +14,7 @@ dataset = './Data/huurwoningentotaalvoorpowerbi.xlsx'
 ## Ophalen van de datasets
 oud = pd.read_excel(dataset)
 oud = oud.drop(oud[oud['Status'] == 'Inactive'].index, inplace=True)
-oud.dropna(how="any", inplace=True)
-oud = oud.fillna("", inplace=False)
+oud.fillna("")
 oud["Status"] = "TBD"
 pd.set_option('display.max_columns', None)
 
