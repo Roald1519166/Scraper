@@ -13,7 +13,6 @@ dataset = './Data/huurwoningentotaalvoorpowerbi.xlsx'
 ## Ophalen van de datasets
 oud = pd.read_excel(dataset)
 ## Weghalen van oude inactieve
-oud.drop(oud[oud['Status'] == 'Inactive'].index, inplace=True)
 oud = oud.fillna("")
 print(oud["Status"].value_counts())
 oud["Status"] = "TBD"
