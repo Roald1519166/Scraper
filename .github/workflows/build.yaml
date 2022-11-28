@@ -2,7 +2,7 @@ name: Python package
 
 on:
   schedule:
-    - cron: "0 8 * * *" #runs at 08:00 UTC everyday
+    - cron: "0 6 * * *" #runs at 08:00 UTC everyday
   workflow_dispatch:
 
 jobs:
