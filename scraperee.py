@@ -232,14 +232,15 @@ for i in inner['Kamers']:
     kamertjes.append(str(i).split('.0')[0])
 inner['Kamers'] = kamertjes
 
+
+inactievedf = './Data/huurwoningeninactief.xlsx'
+dfinactief = pd.read_excel(inactievedf)
+dfinactiefdef = pd.concat([dfinactief, inactief])
+
 ## Exporteren data
 name = './Data/huurwoningentotaal'
 # inactief.to_excel(name + current_time + '_inactief.xlsx', index=False)
 inner.to_excel(name + current_time + ".xlsx", index=False)
 inner.to_csv(name + 'voorpowerbi' + ".csv", index=False)
 inner.to_excel(name + 'voorpowerbi' + ".xlsx", index=False)
-
-inactievedf = './Data/huurwoningeninactief.xlsx'
-dfinactief = pd.read_excel(inactievedf)
-dfinactiefdef = pd.concat([dfinactief, inactief])
-dfinactiefdef.to_excel("./Data/huurwoningeninactief.xlsx", index=False)
+dfinactiefdef.to_excel(name + 'inactieftot' + ".xlsx", index=False)
