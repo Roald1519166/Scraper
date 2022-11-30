@@ -20,7 +20,7 @@ pd.set_option('display.max_columns', None)
 
 ## Huidige datum krijgen (Jaar-Maand-Dag)
 now = datetime.datetime.now()
-current_time = now.strftime("%Y-%m-%d")
+current_time = now.strftime("%m/%d/%Y %H:%M:%S")
 current_time
 
 url = "https://www.huurwoningen.nl/aanbod-huurwoningen/?page=1/" + "?page="
