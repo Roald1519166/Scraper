@@ -233,7 +233,7 @@ for i in inner['Kamers']:
 inner['Kamers'] = kamertjes
 
 
-inactievedf = './Data/huurwoningeninactief.xlsx'
+inactievedf = './Data/huurwoningentotaalinactieftot.xlsx'
 dfinactief = pd.read_excel(inactievedf)
 dfinactiefdef = pd.concat([dfinactief, inactief])
 
