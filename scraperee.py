@@ -50,7 +50,7 @@ for pagina in trange(int(totpages)):
     contents = soup.prettify()
     totaal = soup.find(class_="search-list")
     linktitle = soup.select(".listing-search-item__title a")
-    subtitle = soup.select("div.listing-search-item__sub-title\\'")
+    subtitle = soup.select("div.listing-search-item__sub-title")
     prijstitle = soup.select(".listing-search-item__price")
     info = soup.select(".listing-search-item__features")
 
