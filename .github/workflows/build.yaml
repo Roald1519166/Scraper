@@ -53,3 +53,20 @@ jobs:
           git add Data/*.xlsx || true
           git diff --cached --quiet || git commit -m "Automated dataset upload via Git LFS"
           git push origin main
+          
+      - name: Publish datasets to GitHub Pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      
+          # Clone gh-pages branch of maak hem aan als hij nog niet bestaat
+          git clone --branch gh-pages https://github.com/Roald1519166/Scraper.git gh-pages || git clone https://github.com/Roald1519166/Scraper.git gh-pages
+          cd gh-pages
+      
+          # Kopieer nieuwe datasets van main branch
+          cp ../Data/*.csv Data/ || true
+          cp ../Data/*.xlsx Data/ || true
+      
+          git add Data/*
+          git commit -m "Update datasets for GitHub Pages" || echo "No changes"
+          git push origin gh-pages
