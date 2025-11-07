@@ -1,0 +1,39 @@
+name: Upload datasets
+
+on:
+  workflow_dispatch:   # handmatig starten vanuit GitHub Actions tab
+  push:
+    branches:
+      - main           # (optioneel: alleen bij push naar main)
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # zodat de Action mag pushen naar de repo
+
+    steps:
+      - name: Checkout repository (met LFS)
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Install Git LFS en stel tracking in
+        run: |
+          git lfs install
+          git lfs track "*.csv"
+          git lfs track "*.xlsx"
+          git add .gitattributes
+          git commit -m "Configureer Git LFS tracking" || echo "Geen wijzigingen"
+
+      - name: Voeg datasets toe en commit
+        run: |
+          git add Data/*.csv || true
+          git add Data/*.xlsx || true
+          git commit -m "Upload datasets via Git LFS" || echo "Geen wijzigingen"
+
+      - name: Push wijzigingen
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git push origin main
