@@ -1,38 +1,40 @@
-name: Upload datasets
+name: Upload datasets via LFS
 
 on:
-  workflow_dispatch:   # handmatig starten vanuit GitHub Actions tab
-  push:
-    branches:
-      - main           # (optioneel: alleen bij push naar main)
+  workflow_dispatch:
 
 jobs:
   upload:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # zodat de Action mag pushen naar de repo
+      contents: write
 
     steps:
-      - name: Checkout repository (met LFS)
+      - name: Checkout repo with LFS
         uses: actions/checkout@v4
         with:
           lfs: true
 
-      - name: Install Git LFS en stel tracking in
+      - name: Install Git LFS
         run: |
           git lfs install
           git lfs track "*.csv"
           git lfs track "*.xlsx"
           git add .gitattributes
-          git commit -m "Configureer Git LFS tracking" || echo "Geen wijzigingen"
+          git commit -m "Add LFS tracking" || echo "No changes"
 
-      - name: Voeg datasets toe en commit
+      - name: Run data processing
+        run: |
+          pip install pandas openpyxl
+          python your_script.py  # jouw scraper of concat-script
+
+      - name: Add and commit new files via LFS
         run: |
           git add Data/*.csv || true
           git add Data/*.xlsx || true
-          git commit -m "Upload datasets via Git LFS" || echo "Geen wijzigingen"
+          git commit -m "Automated dataset upload (LFS)" || echo "No changes"
 
-      - name: Push wijzigingen
+      - name: Push changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
