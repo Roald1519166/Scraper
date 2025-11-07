@@ -13,16 +13,20 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install Git LFS
+      - name: Install Git LFS and configure author
         run: |
           git lfs install
           git lfs track "*.csv"
           git lfs track "*.xlsx"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .gitattributes
           git commit -m "Enable Git LFS" || echo "No changes"
 
       - name: Move existing large file to LFS
         run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add Data/huurwoningentotaalinactieftot.xlsx
           git commit -m "Move large file to LFS" || echo "No changes"
           git push origin main
