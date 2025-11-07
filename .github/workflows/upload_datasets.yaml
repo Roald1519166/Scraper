@@ -26,7 +26,7 @@ jobs:
       - name: Run data processing
         run: |
           pip install pandas openpyxl
-          python your_script.py  # jouw scraper of concat-script
+          python scraperee.py  # jouw scraper of concat-script
 
       - name: Add and commit new files via LFS
         run: |
