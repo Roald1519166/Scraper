@@ -1,0 +1,28 @@
+name: Convert existing file to LFS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Git LFS
+        run: |
+          git lfs install
+          git lfs track "*.csv"
+          git lfs track "*.xlsx"
+          git add .gitattributes
+          git commit -m "Enable Git LFS" || echo "No changes"
+
+      - name: Move existing large file to LFS
+        run: |
+          git add Data/huurwoningentotaalinactieftot.xlsx
+          git commit -m "Move large file to LFS" || echo "No changes"
+          git push origin main
