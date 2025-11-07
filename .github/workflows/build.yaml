@@ -7,8 +7,10 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # ✅ nodig voor push via GITHUB_TOKEN
+
     strategy:
       matrix:
         python-version: ["3.8"]
@@ -18,6 +20,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           lfs: true
+          fetch-depth: 0  # ✅ belangrijk voor volledige geschiedenis en LFS pull
 
       # Python setup
       - name: Set up Python ${{ matrix.python-version }}
@@ -39,6 +42,8 @@ jobs:
 
       # Commit & push datasets via Git LFS
       - name: Commit datasets
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git lfs install
           git lfs track "*.csv"
@@ -46,33 +51,35 @@ jobs:
           git add .gitattributes
           git commit -m "Configure Git LFS tracking" || echo "No changes"
 
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.email "1519166janssen@zuyd.nl"
+          git config --global user.name "Roald1519166"
 
           git add Data/*.csv || true
           git add Data/*.xlsx || true
           git diff --cached --quiet || git commit -m "Automated dataset upload via Git LFS"
-          git push origin main
-          
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/Roald1519166/Scraper.git main
+
+      # Publish datasets to GitHub Pages
       - name: Publish datasets to GitHub Pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
       
           # Clone gh-pages branch
-          git clone --branch gh-pages https://github.com/Roald1519166/Scraper.git gh-pages
+          git clone --branch gh-pages https://x-access-token:${GITHUB_TOKEN}@github.com/Roald1519166/Scraper.git gh-pages
           cd gh-pages
       
-          # Maak Data-map aan
           mkdir -p Data
       
-          # Kopieer bestanden ZONDER LFS pointers
+          # ✅ Haal echte bestanden binnen
           git lfs pull origin main
           cp ../Data/*.csv Data/ || true
           cp ../Data/*.xlsx Data/ || true
       
-          # Verwijder LFS tracking binnen gh-pages
-          git lfs uninstall
+          # ❌ Verwijder LFS tracking voor Pages
+          git lfs uninstall || true
           rm -f .gitattributes
       
           git add Data/*
