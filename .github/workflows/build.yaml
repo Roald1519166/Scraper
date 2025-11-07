@@ -59,14 +59,22 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
       
-          # Clone gh-pages branch of maak hem aan als hij nog niet bestaat
-          git clone --branch gh-pages https://github.com/Roald1519166/Scraper.git gh-pages || git clone https://github.com/Roald1519166/Scraper.git gh-pages
+          # Clone gh-pages branch
+          git clone --branch gh-pages https://github.com/Roald1519166/Scraper.git gh-pages
           cd gh-pages
       
-          # Kopieer nieuwe datasets van main branch
+          # Maak Data-map aan
+          mkdir -p Data
+      
+          # Kopieer bestanden ZONDER LFS pointers
+          git lfs pull origin main
           cp ../Data/*.csv Data/ || true
           cp ../Data/*.xlsx Data/ || true
       
+          # Verwijder LFS tracking binnen gh-pages
+          git lfs uninstall
+          rm -f .gitattributes
+      
           git add Data/*
-          git commit -m "Update datasets for GitHub Pages" || echo "No changes"
+          git commit -m "Update datasets for GitHub Pages (non-LFS)" || echo "No changes"
           git push origin gh-pages
